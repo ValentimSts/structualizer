@@ -88,21 +88,7 @@ void draw_button(Button* btn)
     }
 }
 
-void draw_buttons(Button** buttons, int size)
-{
-    for (int i = 0; i < size; i++) {
-        if (buttons[i] != NULL) draw_button(buttons[i]);
-    }
-}
-
 void clear_button(Button* btn)
 {
     free(btn);
-}
-
-void clear_buttons(Button** buttons, int size)
-{
-    for (int i = 0; i < size; i++) {
-        if (buttons[i] != NULL) clear_button(buttons[i]);
-    }
 }

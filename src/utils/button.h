@@ -4,6 +4,7 @@
 
 #define DEFAULT_BTN_WIDTH 150
 #define DEFAULT_BTN_HEIGHT 50
+#define DEFAULT_BTN_SPACING 10
 
 
 typedef enum ButtonState {
@@ -61,27 +62,10 @@ Button* create_custom_button(int x, int y, int width, int height, char* text, in
 void draw_button(Button* btn);
 
 /**
- * @brief Draws all the buttons in the given array
- * on the screen.
- * 
- * @param btns The array of buttons to be drawn.
- * @param size The size of the array.
- */
-void draw_buttons(Button** btns, int size);
-
-/**
  * @brief Clears the button's memory.
  * 
  * @param btn The button to be cleared.
  */
 void clear_button(Button* btn);
-
-/**
- * @brief Clears all the given array buttons' memory.
- * 
- * @param btns The array of buttons to be cleared.
- * @param size The size of the array.
- */
-void clear_buttons(Button** btns, int size);
 
 #endif // _BUTTON_H_
