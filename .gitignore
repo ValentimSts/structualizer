@@ -1,3 +1,9 @@
+# vscode workspace settings
+.vscode/
+
+# structualizer program executable
+structualizer
+
 # Prerequisites
 *.d
 

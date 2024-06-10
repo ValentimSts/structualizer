@@ -14,13 +14,48 @@ RAYLIB_DIR = $(RAYLIB_BASE_DIR)/raylib-$(RAYLIB_VERSION)
 RAYLIB_INCLUDE_DIR = $(RAYLIB_DIR)/include
 RAYLIB_LIB_DIR = $(RAYLIB_DIR)/lib
 
-# Structs directories
+
+# ---------------------------------
+# Structs
+# ---------------------------------
+
+# Directories
 STRUCTS_DIR = $(SRC_DIR)/structs
 HASH_MAP_DIR = $(STRUCTS_DIR)/hash-map
 TREE_MAP_DIR = $(STRUCTS_DIR)/tree-map
 
-# Screens directories
+# Sources
+STRUCTS_SRCS = $(STRUCTS_DIR)/data.c \
+			   $(HASH_MAP_DIR)/hash_map.c \
+			   $(TREE_MAP_DIR)/tree_map.c
+
+# ---------------------------------
+
+
+# ---------------------------------
+# Screens
+# ---------------------------------
+
+# Directories
 SCREENS_DIR = $(SRC_DIR)/screens
+
+# Sources
+SCREENS_SRCS = $(SCREENS_DIR)/screen.c
+
+# ---------------------------------
+
+
+# ---------------------------------
+# Utils
+# ---------------------------------
+
+# Directories
+UTILS_DIR = $(SRC_DIR)/utils
+# Sources
+UTILS_SRCS = $(UTILS_DIR)/button.c
+
+# ---------------------------------
+
 
 CC = gcc
 CFLAGS = -O1 -std=c99 -Wno-missing-braces -Wall -Wextra -D_DEFAULT_SOURCE
@@ -29,10 +64,9 @@ LIBS = -L$(RAYLIB_LIB_DIR) -lraylib
 
 # Source files
 SRCS = $(SRC_DIR)/structualizer.c \
-       $(STRUCTS_DIR)/data.c \
-       $(HASH_MAP_DIR)/hash_map.c \
-       $(TREE_MAP_DIR)/tree_map.c \
-	   $(SCREENS_DIR)/screen.c \
+       $(STRUCTS_SRCS) \
+	   $(SCREENS_SRCS) \
+	   $(UTILS_SRCS)
 
 OBJS = $(SRCS:.c=.o)
 
