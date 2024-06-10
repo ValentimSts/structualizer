@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "data.h"
 
 int hash(data* d, int upper_bound)

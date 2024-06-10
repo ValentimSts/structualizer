@@ -1,6 +1,10 @@
 #ifndef _DATA_H_
 #define _DATA_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct data {
     char* path;
     char* value;

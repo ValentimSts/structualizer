@@ -19,16 +19,20 @@ STRUCTS_DIR = $(SRC_DIR)/structs
 HASH_MAP_DIR = $(STRUCTS_DIR)/hash-map
 TREE_MAP_DIR = $(STRUCTS_DIR)/tree-map
 
+# Screens directories
+SCREENS_DIR = $(SRC_DIR)/screens
+
 CC = gcc
-CFLAGS = -O1 -std=c99 -Wno-missing-braces -Wall -Wextra
+CFLAGS = -O1 -std=c99 -Wno-missing-braces -Wall -Wextra -D_DEFAULT_SOURCE
 INCLUDES = -I$(RAYLIB_INCLUDE_DIR)
 LIBS = -L$(RAYLIB_LIB_DIR) -lraylib
 
 # Source files
-SRCS = $(SRC_DIR)/main.c \
+SRCS = $(SRC_DIR)/structualizer.c \
+       $(STRUCTS_DIR)/data.c \
        $(HASH_MAP_DIR)/hash_map.c \
        $(TREE_MAP_DIR)/tree_map.c \
-       $(STRUCTS_DIR)/data.c
+	   $(SCREENS_DIR)/screen.c \
 
 OBJS = $(SRCS:.c=.o)
 
