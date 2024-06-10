@@ -1,10 +1,6 @@
 #ifndef _HASH_MAP_H_
 #define _HASH_MAP_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "../data.h"
 
 #define TABLE_SIZE 2

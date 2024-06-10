@@ -6,67 +6,60 @@
 #include "structs/data.h"
 #include "structs/hash-map/hash_map.h"
 #include "structs/tree-map/tree_map.h"
-#include "screens/screen.h"
-#include "utils/button.h"
+#include "screens/screen_controller.h"
 
 #include <raylib.h>
+
 
 #define WINDOW_TITLE "Structualizer"
 #define RES_FACTOR 80
 #define RES_WIDTH 16
 #define RES_HEIGHT 9
+#define WINDOW_WIDTH RES_WIDTH*RES_FACTOR
+#define WINDOW_HEIGHT RES_HEIGHT*RES_FACTOR
 #define TARGET_FPS 60
 
-char** get_struct_names(char* structs_dir); 
+
+static char** get_available_struct_names(char* structs_dir); 
 
 int main()
 {
-    InitWindow(RES_WIDTH*RES_FACTOR, RES_HEIGHT*RES_FACTOR, WINDOW_TITLE);
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(TARGET_FPS);
     SetExitKey(KEY_NULL);
-    
-    char** struct_names = get_struct_names("structs");
+
+    // TODO: this should be moved somwhere else.
+    char** struct_names = get_available_struct_names("structs");
 
     int struct_count = 0;
     for (int i = 0; struct_names[i] != NULL; i++) {
-        printf("%s\n", struct_names[i]);
         struct_count++;
     }
 
-    Button** buttons = (Button**) malloc(struct_count * sizeof(Button*));
-    for (int i = 0; i < struct_count; i++) {
-        buttons[i] = create_button(70, 70 + 100*i, struct_names[i], 20);
-    }
+    ScreenController* screen_controller = create_screen_controller(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("It works!", 20, 20, 20, BLACK);
-        for (int i = 0; i < struct_count; i++) {
-            draw_button(buttons[i]);
-        }
+        update_screen(screen_controller, struct_names, struct_count);
         EndDrawing();
     }
 
-    for (int i = 0; i < struct_count; i++) {
-        clear_button(buttons[i]);
-    }
-
-    for (int i = 0; struct_names[i] != NULL; i++) {
-        free(struct_names[i]);
-    }
-    free(struct_names);
     CloseWindow();
     
     return 0;
 }
 
 
-// retrieve the names of all sub directories of the ../strcuts directory
-// and store them in the given array
-char** get_struct_names(char* structs_dir)
+/**
+ * @brief Retrieves the names of all sub-directories of the given
+ * directory.
+ * 
+ * @param dir The path to the parent directory.
+ * @return A char* list of the names of all found sub-directories.
+ */
+static char** get_available_struct_names(char* dir_name)
 {
-    DIR* dir = opendir(structs_dir);
+    DIR* dir = opendir(dir_name);
     if (dir == NULL) return NULL;
 
     int starting_size = 5;

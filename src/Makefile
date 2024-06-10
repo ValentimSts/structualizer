@@ -38,9 +38,11 @@ STRUCTS_SRCS = $(STRUCTS_DIR)/data.c \
 
 # Directories
 SCREENS_DIR = $(SRC_DIR)/screens
+MAIN_SCREEN_DIR = $(SCREENS_DIR)/main-screen
 
 # Sources
-SCREENS_SRCS = $(SCREENS_DIR)/screen.c
+SCREENS_SRCS = $(SCREENS_DIR)/screen_controller.c \
+			   $(MAIN_SCREEN_DIR)/main_screen.c
 
 # ---------------------------------
 
@@ -51,6 +53,7 @@ SCREENS_SRCS = $(SCREENS_DIR)/screen.c
 
 # Directories
 UTILS_DIR = $(SRC_DIR)/utils
+
 # Sources
 UTILS_SRCS = $(UTILS_DIR)/button.c
 

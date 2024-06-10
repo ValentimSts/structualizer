@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "hash_map.h"
 
 typedef struct hash_map_entry hentry;

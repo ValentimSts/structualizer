@@ -3,9 +3,13 @@
 
 #include "button.h"
 
-#define BTN_TEXT_PADDING 5
 
-Button* create_button(int x, int y, char* text, int font_size)
+#define BTN_IDLE_COLOR LIGHTGRAY
+#define BTN_HOVER_COLOR GRAY
+#define BTN_PRESSED_COLOR DARKGRAY
+
+
+Button* create_default_button(int x, int y, char* text, int font_size)
 {
     Button* btn = (Button*) malloc(sizeof(Button));
     btn->x = x;
@@ -20,6 +24,20 @@ Button* create_button(int x, int y, char* text, int font_size)
     return btn;
 }
 
+Button* create_custom_button(int x, int y, int width, int height, char* text, int font_size)
+{
+    Button* btn = (Button*) malloc(sizeof(Button));
+    btn->x = x;
+    btn->y = y;
+    btn->width = width;
+    btn->height = height;
+    btn->activate_action = false;
+    btn->state = BUTTON_IDLE;
+    btn->text = text;
+    btn->font_size = font_size;
+
+    return btn;
+}
 
 void draw_button(Button* btn)
 {
@@ -43,32 +61,48 @@ void draw_button(Button* btn)
         btn->state = BUTTON_IDLE;
     }
 
-    Color color = LIGHTGRAY;
+    Color color = BTN_IDLE_COLOR;
     switch (btn->state) {
         case BUTTON_IDLE:
-            color = LIGHTGRAY;
+            color = BTN_IDLE_COLOR;
             break;
 
         case BUTTON_HOVER:
-            color = GRAY;
+            color = BTN_HOVER_COLOR;
             break;
 
         case BUTTON_PRESSED:
-            color = DARKGRAY;
+            color = BTN_PRESSED_COLOR;
             break;
     }
 
+    Vector2 text_measures = MeasureTextEx(GetFontDefault(), btn->text, btn->font_size, 1);
+    int pos_text_x = btn->x + (btn->width - text_measures.x) / 2;
+    int pos_text_y = btn->y + (btn->height - text_measures.y) / 2;
+
     DrawRectangle(btn->x, btn->y, btn->width, btn->height, color);
-    DrawText(btn->text, btn->x + BTN_TEXT_PADDING, btn->y + BTN_TEXT_PADDING, 20, BLACK);
+    DrawText(btn->text, pos_text_x, pos_text_y, btn->font_size, BLACK);
 
     if (btn->activate_action) {
         // TODO: call the button callback
     }
 }
 
+void draw_buttons(Button** buttons, int size)
+{
+    for (int i = 0; i < size; i++) {
+        if (buttons[i] != NULL) draw_button(buttons[i]);
+    }
+}
 
 void clear_button(Button* btn)
 {
-    free(btn->text);
     free(btn);
+}
+
+void clear_buttons(Button** buttons, int size)
+{
+    for (int i = 0; i < size; i++) {
+        if (buttons[i] != NULL) clear_button(buttons[i]);
+    }
 }
