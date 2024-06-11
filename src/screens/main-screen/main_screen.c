@@ -6,6 +6,7 @@
 
 #include "main_screen.h"
 #include "../../utils/button.h"
+#include "../../styles.h"
 
 #define BTN_PADDING 10
 
@@ -26,15 +27,17 @@ static void draw_custom_buttons(int start_x, int start_y, int btn_section_width,
     int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count,
     Orientation orientation);
 
+void test_action();
 
 void update_main_screen(ScreenController* screen_controller, char** btn_names, int btn_count)
 {
-    ClearBackground(RAYWHITE);
+    ClearBackground(PRIMARY_COLOR);
+    
     int section_width = screen_controller->screen_width / 2;
     int section_height = screen_controller->screen_height;
 
-    draw_default_buttons(10, 10, section_width - 20, section_height - 20, btn_names, btn_count, HORIZONTAL);
-    draw_custom_buttons(section_width + 10, 10, section_width - 20, section_height - 20, 150, 50, 10, btn_names, btn_count, VERTICAL);
+    draw_default_buttons(10, 10, section_width - 20, section_height - 20, btn_names, btn_count, VERTICAL);
+    draw_custom_buttons(section_width + 10, 10, section_width - 20, section_height - 20, 250, 75, 10, btn_names, btn_count, VERTICAL);
 }
 
 
@@ -168,8 +171,14 @@ static void draw_buttons(int start_x, int start_y, int max_btn_section_width, in
         }
 
         Button* btn = create_custom_button(next_btn_x, next_btn_y,
-            btn_width, btn_height, btn_names[i], 20);
+            btn_width, btn_height, btn_names[i], 20, test_action);
         draw_button(btn);
         clear_button(btn);
     }
+}
+
+
+void test_action(char* btn_name)
+{
+    printf("Button pressed: %s\n", btn_name);
 }

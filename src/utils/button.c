@@ -2,14 +2,10 @@
 #include <raylib.h>
 
 #include "button.h"
+#include "../styles.h"
 
 
-#define BTN_IDLE_COLOR LIGHTGRAY
-#define BTN_HOVER_COLOR GRAY
-#define BTN_PRESSED_COLOR DARKGRAY
-
-
-Button* create_default_button(int x, int y, char* text, int font_size)
+Button* create_default_button(int x, int y, char* text, void (*action)(char*))
 {
     Button* btn = (Button*) malloc(sizeof(Button));
     btn->x = x;
@@ -17,14 +13,15 @@ Button* create_default_button(int x, int y, char* text, int font_size)
     btn->width = DEFAULT_BTN_WIDTH;
     btn->height = DEFAULT_BTN_HEIGHT;
     btn->activate_action = false;
+    btn->action = action;
     btn->state = BUTTON_IDLE;
     btn->text = text;
-    btn->font_size = font_size;
+    btn->font_size = DEFAULT_FONT_SIZE;
 
     return btn;
 }
 
-Button* create_custom_button(int x, int y, int width, int height, char* text, int font_size)
+Button* create_custom_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(char*))
 {
     Button* btn = (Button*) malloc(sizeof(Button));
     btn->x = x;
@@ -32,6 +29,7 @@ Button* create_custom_button(int x, int y, int width, int height, char* text, in
     btn->width = width;
     btn->height = height;
     btn->activate_action = false;
+    btn->action = action;
     btn->state = BUTTON_IDLE;
     btn->text = text;
     btn->font_size = font_size;
@@ -81,10 +79,11 @@ void draw_button(Button* btn)
     int pos_text_y = btn->y + (btn->height - text_measures.y) / 2;
 
     DrawRectangle(btn->x, btn->y, btn->width, btn->height, color);
-    DrawText(btn->text, pos_text_x, pos_text_y, btn->font_size, BLACK);
+    DrawText(btn->text, pos_text_x, pos_text_y, btn->font_size, PRIMARY_TEXT_COLOR);
 
     if (btn->activate_action) {
-        // TODO: call the button callback
+        btn->action(btn->text);
+        btn->activate_action = 0;
     }
 }
 

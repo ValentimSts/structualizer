@@ -2,7 +2,7 @@
 #define _SCREEN_CONTROLLER_H_
 
 typedef enum ScreenDir {
-    MAIN_SCREEN = 0
+    MAIN_SCREEN = 0,
 } ScreenId;
 
 typedef struct ScreenController {

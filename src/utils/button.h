@@ -1,12 +1,6 @@
 #ifndef _BUTTON_H_
 #define _BUTTON_H_
 
-
-#define DEFAULT_BTN_WIDTH 150
-#define DEFAULT_BTN_HEIGHT 50
-#define DEFAULT_BTN_SPACING 10
-
-
 typedef enum ButtonState {
     BUTTON_IDLE = 0,
     BUTTON_HOVER = 1,
@@ -18,8 +12,8 @@ typedef struct Button {
     int y;
     int width;
     int height;
-    int activate_action;
-    // TODO: create a button action callback
+    int activate_action; // TODO: maybe use bool here instead.
+    void (*action)(char*);
     ButtonState state;
     char* text;
     int font_size;
@@ -27,18 +21,17 @@ typedef struct Button {
 
 
 /**
- * @brief Create a button struct with the default width and height
- * values, and the given parameters.
- * The default width and height values are DEFAULT_BTN_WIDTH and
- * DEFAULT_BTN_HEIGHT respectively.
+ * @brief Create a button struct with the default width, height and
+ * dont size values, and the given parameters.
+ * The default width, height and font size values are DEFAULT_BTN_WIDTH,
+ * DEFAULT_BTN_HEIGHT and DEFAULT_FONT_SIZE respectively.
  * 
  * @param x The x position of the button.
  * @param y The y position of the button.
  * @param text The text to be displayed on the button.
- * @param font_size The font size of the text.
  * @return A pointer to the created button.
  */
-Button* create_default_button(int x, int y, char* text, int font_size);
+Button* create_default_button(int x, int y, char* text, void (*action)(char*));
 
 /**
  * @brief Create a button struct with a custom width and height values,
@@ -52,7 +45,7 @@ Button* create_default_button(int x, int y, char* text, int font_size);
  * @param font_size The font size of the text.
  * @return A pointer to the created button.
  */
-Button* create_custom_button(int x, int y, int width, int height, char* text, int font_size);
+Button* create_custom_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(char*));
 
 /**
  * @brief Draws the given button on the screen.
