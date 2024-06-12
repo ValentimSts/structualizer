@@ -3,23 +3,12 @@
 #include <string.h>
 #include <dirent.h>
 
-#include "structs/data.h"
-#include "structs/hash-map/hash_map.h"
-#include "structs/tree-map/tree_map.h"
+#include "raylib.h"
+
+#include "styles.h"
 #include "screens/screen_controller.h"
 
-#include <raylib.h>
-
-
-#define WINDOW_TITLE "Structualizer"
-#define RES_FACTOR 80
-#define RES_WIDTH 16
-#define RES_HEIGHT 9
-#define WINDOW_WIDTH RES_WIDTH*RES_FACTOR
-#define WINDOW_HEIGHT RES_HEIGHT*RES_FACTOR
-#define TARGET_FPS 60
-
-
+// TODO: this function should be moved elsewhere.
 static char** get_available_struct_names(char* structs_dir); 
 
 int main()
@@ -28,7 +17,6 @@ int main()
     SetTargetFPS(TARGET_FPS);
     SetExitKey(KEY_NULL);
 
-    // TODO: this should be moved somwhere else.
     char** struct_names = get_available_struct_names("structs");
 
     int struct_count = 0;

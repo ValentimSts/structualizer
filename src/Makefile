@@ -5,14 +5,27 @@ TARGET = structualizer
 SRC_DIR = .
 PREV_DIR = ..
 
-# Raylib version
+# ---------------------------------
+# Raylib
+# ---------------------------------
+
+# To change the Raylib version used,
+# place that respective version's folder
+# under the raylib/ dir, with the name
+# 'raylib-<version>', and then change the
+# RAYLIB_VERSION variable to the desired
+# one.
+
+# Version
 RAYLIB_VERSION = 5.0
 
-# Raylib directories
+# Directories
 RAYLIB_BASE_DIR = $(PREV_DIR)/raylib
 RAYLIB_DIR = $(RAYLIB_BASE_DIR)/raylib-$(RAYLIB_VERSION)
 RAYLIB_INCLUDE_DIR = $(RAYLIB_DIR)/include
 RAYLIB_LIB_DIR = $(RAYLIB_DIR)/lib
+
+# ---------------------------------
 
 
 # ---------------------------------

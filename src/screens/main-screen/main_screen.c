@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <raylib.h>
+#include "raylib.h"
 
 #include "main_screen.h"
 #include "../../utils/button.h"

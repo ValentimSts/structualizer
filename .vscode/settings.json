@@ -2,6 +2,7 @@
     "files.associations": {
         "*.rmd": "markdown",
         "stdlib.h": "c",
-        "screen_controller.h": "c"
+        "screen_controller.h": "c",
+        "raylib.h": "c"
     }
 }

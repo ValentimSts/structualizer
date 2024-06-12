@@ -1,5 +1,6 @@
 #include <stdlib.h>
-#include <raylib.h>
+
+#include "raylib.h"
 
 #include "button.h"
 #include "../styles.h"
