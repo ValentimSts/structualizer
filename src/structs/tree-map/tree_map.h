@@ -9,4 +9,7 @@
 
 #define BRANCH_SIZE 5
 
+// Test function
+void test();
+
 #endif // _TREE_MAP_H_

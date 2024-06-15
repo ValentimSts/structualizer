@@ -21,7 +21,7 @@ Struct** create_structs(char** struct_names, int* struct_count)
     }
 
     // It may happen that some of the provided struct names have not 
-    // been defined, and so we need filter these out.
+    // been defined/ are invalid, and so we need filter them out.
     char** final_struct_names = (char**) malloc(sizeof(char*) * (*struct_count));
     int final_struct_count = 0;
 
@@ -40,13 +40,13 @@ Struct** create_structs(char** struct_names, int* struct_count)
                 case HASH_MAP:
                     structs[i] = (Struct*) malloc(sizeof(Struct));
                     structs[i]->name = "Hash Map";
-                    structs[i]->vtable = NULL; // TODO: temporary solution.
+                    structs[i]->vtable = HASH_MAP_VTABLE;
                     break;
 
                 case TREE_MAP:
                     structs[i] = (Struct*) malloc(sizeof(Struct));
                     structs[i]->name = "Tree Map";
-                    structs[i]->vtable = NULL; // TODO: temporary solution.
+                    structs[i]->vtable = TREE_MAP_VTABLE;
                     break;
 
                 case UNDEFINED:

@@ -2,6 +2,7 @@
 #define _BUTTON_H_
 
 #include "../structs/data.h"
+#include "../structs/struct.h"
 
 typedef enum ButtonType {
     SELECT = 0,
@@ -17,7 +18,7 @@ typedef enum ButtonState {
 } ButtonState;
 
 typedef struct ButtonAction {
-    void (*select_action)(char*);
+    void (*select_action)(void);
 
     void (*insert_action)(data*);
     void (*update_action)(data*);
@@ -48,7 +49,7 @@ typedef struct Button {
  * @param action The action to be performed when the button is clicked.
  * @return A pointer to the created button.
  */
-Button* create_default_select_button(int x, int y, char* text, void (*action)(char*));
+Button* create_default_select_button(int x, int y, char* text, void (*action)(void));
 
 /**
  * @brief Create an insert button with the default values for width, height
@@ -96,7 +97,7 @@ Button* create_default_remove_button(int x, int y, char* text, void (*action)(da
  * @param action The action to be performed when the button is clicked.
  * @return A pointer to the created button.
  */
-Button* create_custom_select_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(char*));
+Button* create_custom_select_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(void));
 
 /**
  * @brief Create an insert button with the given width, height and font size.

@@ -13,7 +13,7 @@ static Button* create_custom_button(int x, int y, int width, int height, char* t
     int font_size, ButtonType type, ButtonAction action);
 
 
-Button* create_default_select_button(int x, int y, char* text, void (*action)(char*))
+Button* create_default_select_button(int x, int y, char* text, void (*action)(void))
 {
     ButtonAction btn_action = { 0 };
     btn_action.select_action = action;
@@ -47,7 +47,7 @@ Button* create_default_remove_button(int x, int y, char* text, void (*action)(da
 }
 
 Button* create_custom_select_button(int x, int y, int width, int height, char* text,
-    int font_size, void (*action)(char*))
+    int font_size, void (*action)(void))
 {
     ButtonAction btn_action = { 0 };
     btn_action.select_action = action;
@@ -129,7 +129,7 @@ void draw_button(Button* btn)
     if (btn->activate_action) {
         switch (btn->type) {
             case SELECT:
-                btn->action.select_action(btn->text);
+                btn->action.select_action();
                 break;
             
             case INSERT:

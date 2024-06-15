@@ -16,6 +16,17 @@
 typedef struct StructVtable {
     void (*draw_struct)(void);
     void (*draw_struct_stats)(void);
+
+    /************************************************************************** 
+    *   TODO:
+    * 
+    *   void (*draw_struct)(int section_start_X, int section_start_y,
+    *       int section_width, int section_height);
+    * 
+    *   void (*draw_struct_stats)(int section_start_X, int section_start_y,
+    *       int section_width, int section_height);
+    * 
+    ***************************************************************************/
     
     void (*struct_insert)(data* d);
     void (*struct_update)(data* d);
