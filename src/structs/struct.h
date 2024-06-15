@@ -97,6 +97,6 @@ static inline void struct_struct_remove(Struct* self, data* d)
  * @param struct_count The number of structs to be created.
  * @return An array of Structs.
  */
-Struct** create_structs(char** struct_names, int struct_count);
+Struct** create_structs(char** struct_names, int* struct_count);
 
 #endif // _STRUCT_H_

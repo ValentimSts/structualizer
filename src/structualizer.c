@@ -25,7 +25,7 @@ int main()
         struct_count++;
     }
 
-    Struct** structs = create_structs(struct_names, 2);
+    Struct** structs = create_structs(struct_names, &struct_count);
     ScreenController* screen_controller = create_screen_controller(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     while (!WindowShouldClose()) {
