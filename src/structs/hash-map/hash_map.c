@@ -2,11 +2,14 @@
 #include <stdlib.h>
 
 #include "hash_map.h"
+#include "../struct.h"
 
 typedef struct hash_map_entry hentry;
 typedef struct hash_node hnode;
 
 struct hash_map {
+    Struct* base_struct; 
+
     int size;
     hentry** entries;
 };
@@ -41,6 +44,60 @@ static int remove_node(hnode* hn);
 static hnode* search_node(hnode* hn, data* d);
 
 
+// ---------------------------------------------------------------
+// Struct interface implementation
+// ---------------------------------------------------------------
+
+static void draw_struct();
+static void draw_struct_stats();
+static void struct_insert(data* d);
+static void struct_update(data* d);
+static void struct_remove(data* d);
+
+static void draw_struct()
+{
+    printf("Drawing hash map...\n");
+}
+
+static void draw_struct_stats()
+{
+    printf("Drawing hash map statistics...\n");
+}
+
+static void struct_insert(data* d)
+{
+    printf("Inserting data into hash map...\n");
+    print_data(d);
+}
+
+static void struct_update(data* d)
+{
+    printf("Updating data in hash map...\n");
+    print_data(d);
+}
+
+static void struct_remove(data* d)
+{
+    printf("Removing data from hash map...\n");
+    print_data(d);
+}
+
+const StructVtable HASH_MAP_VTABLE[] = {
+    {draw_struct, draw_struct_stats, struct_insert, struct_update, struct_remove}
+};
+
+const hmap DEFAULT_HASH_MAP = {
+    .base_struct = &(Struct) {
+        .name = "Hash Map",
+        .vtable = HASH_MAP_VTABLE
+    },
+    .size = TABLE_SIZE,
+    .entries = NULL
+};
+
+// ---------------------------------------------------------------
+
+
 /**
  * @brief Creates a new hash map.
  * 
@@ -52,6 +109,15 @@ hmap* create_hash_map() {
     if (hm == NULL) {
         return NULL;
     }
+
+    hm->base_struct = (Struct*) malloc(sizeof(Struct));
+    if (hm->base_struct == NULL) {
+        free(hm);
+        return NULL;
+    }
+
+    hm->base_struct->name = "Hash Map";
+    hm->base_struct->vtable = HASH_MAP_VTABLE;
 
     hm->size = TABLE_SIZE;
     hm->entries = (hentry**) malloc(sizeof(hentry*) * hm->size);

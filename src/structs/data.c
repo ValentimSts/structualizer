@@ -1,32 +1,33 @@
 #include "data.h"
 
+
 int hash(data* d, int upper_bound)
 {
     long int hash, a = 31415, b = 27183;
 
-    for(hash = 0; *d->path != 0; d->path++, a = a*b%(upper_bound-1))
-        hash = (a*hash + *d->path) % upper_bound;
+    for(hash = 0; *d->key != 0; d->key++, a = a*b%(upper_bound-1))
+        hash = (a*hash + *d->key) % upper_bound;
 
     return hash;
 }
 
-data* create_data(char* path, char* value)
+data* create_data(char* key, char* value)
 {
     data* d = (data*) malloc(sizeof(data));
     if(d == NULL) {
         return NULL;
     }
 
-    d->path = (char*) malloc(strlen(path) + 1);
-    if(d->path == NULL) {
+    d->key = (char*) malloc(strlen(key) + 1);
+    if(d->key == NULL) {
         free(d);
         return NULL;
     }
-    strcpy(d->path, path);
+    strcpy(d->key, key);
 
     d->value = (char*) malloc(strlen(value) + 1);
     if(d->value == NULL) {
-        free(d->path);
+        free(d->key);
         free(d);
         return NULL;
     }
@@ -41,7 +42,7 @@ int destroy_data(data* d)
         return -1;
     }
 
-    free(d->path);
+    free(d->key);
     free(d->value);
     free(d);
 
@@ -70,5 +71,14 @@ int compare_data(data* d1, data* d2)
         return -1;
     }
 
-    return strcmp(d1->path, d2->path);
+    return strcmp(d1->key, d2->key);
+}
+
+void print_data(data* d)
+{
+    if(d == NULL) {
+        return;
+    }
+
+    printf("Key: %s, Value: %s\n", d->key, d->value);
 }

@@ -17,4 +17,6 @@ data* search_hash_map(hmap* hm, data* d);
 // Test function
 void test();
 
+extern const hmap DEFAULT_HASH_MAP;
+
 #endif // _HASH_MAP_H_

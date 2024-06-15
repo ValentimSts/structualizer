@@ -38,7 +38,8 @@ HASH_MAP_DIR = $(STRUCTS_DIR)/hash-map
 TREE_MAP_DIR = $(STRUCTS_DIR)/tree-map
 
 # Sources
-STRUCTS_SRCS = $(STRUCTS_DIR)/data.c \
+STRUCTS_SRCS = $(STRUCTS_DIR)/struct.c \
+			   $(STRUCTS_DIR)/data.c \
 			   $(HASH_MAP_DIR)/hash_map.c \
 			   $(TREE_MAP_DIR)/tree_map.c
 
@@ -91,6 +92,7 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBS) -o $@
 
+# Not entirely sure if setting LD_LIBRARY_PATH here accomplishes much.
 run: $(TARGET)
 	LD_LIBRARY_PATH=$(RAYLIB_LIB_DIR):$$LD_LIBRARY_PATH ./$(TARGET)
 

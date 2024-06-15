@@ -16,6 +16,13 @@ typedef enum Orientation {
 } Orientation;
 
 
+static void draw_struct_btn_section(int start_x, int start_y, int width, int height, int padding, int margin,
+    Color bg_color, int border_width, Color border_color, char** btn_names, int btn_count,
+    Orientation orientation);
+
+static void draw_section(int start_x, int start_y, int width, int height, int margin, Color bg_color,
+    int border_width, Color border_color);
+
 static void draw_buttons(int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
     int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count,
     Orientation orientation);
@@ -29,15 +36,31 @@ static void draw_custom_buttons(int start_x, int start_y, int btn_section_width,
 
 void test_action();
 
+
 void update_main_screen(ScreenController* screen_controller, char** btn_names, int btn_count)
 {
     ClearBackground(PRIMARY_COLOR);
     
-    int section_width = screen_controller->screen_width / 2;
-    int section_height = screen_controller->screen_height;
+    int btn_section_margin = 10;
+    int btn_section_width = 250;
+    int btn_section_height = screen_controller->screen_height;
 
-    draw_default_buttons(10, 10, section_width - 20, section_height - 20, btn_names, btn_count, VERTICAL);
-    draw_custom_buttons(section_width + 10, 10, section_width - 20, section_height - 20, 250, 75, 10, btn_names, btn_count, VERTICAL);
+    draw_struct_btn_section(0, 0, btn_section_width, btn_section_height,
+        10, 10, PRIMARY_COLOR, 2, SECONDARY_COLOR, btn_names, btn_count, VERTICAL);
+
+    int top_right_section_margin = 10;
+    int top_right_section_width = screen_controller->screen_width - btn_section_width;
+    int top_right_section_height = screen_controller->screen_height - 200;
+
+    draw_section(btn_section_width, 0, top_right_section_width, top_right_section_height,
+        top_right_section_margin, PRIMARY_COLOR, 2, SECONDARY_COLOR);
+
+    int bottom_right_section_margin = 10;
+    int bottom_right_section_width = screen_controller->screen_width - btn_section_width;
+    int bottom_right_section_height = screen_controller->screen_height - top_right_section_height;
+
+    draw_section(btn_section_width, top_right_section_height, bottom_right_section_width, bottom_right_section_height,
+        bottom_right_section_margin, PRIMARY_COLOR, 2, SECONDARY_COLOR);
 }
 
 
@@ -181,4 +204,56 @@ static void draw_buttons(int start_x, int start_y, int max_btn_section_width, in
 void test_action(char* btn_name)
 {
     printf("Button pressed: %s\n", btn_name);
+}
+
+static void draw_struct_btn_section(int start_x, int start_y, int width, int height, int padding, int margin,
+    Color bg_color, int border_width, Color border_color, char** btn_names, int btn_count,
+    Orientation orientation)
+{
+    // Determine the real values of the section, excluding the margins.
+
+    int real_width = width - (margin * 2);
+    int real_height = height - (margin * 2);
+
+    int real_start_x = start_x + margin;
+    int real_start_y = start_y + margin;
+
+    DrawRectangle(real_start_x, real_start_y, real_width, real_height, bg_color);
+    Rectangle border_rec = { real_start_x, real_start_y, real_width, real_height };
+    DrawRectangleLinesEx(border_rec, border_width, border_color);
+
+    // Draw the buttons within the section, taking into account the
+    // provided padding value.
+
+    int btn_start_x = real_start_x + padding;
+    int btn_start_y = real_start_y + padding;
+
+    int btn_width = real_width;
+    int btn_height = real_height;
+
+    if (orientation == VERTICAL) {
+        btn_width -= (padding * 2);
+        btn_height = DEFAULT_BTN_HEIGHT;
+    }
+    else {
+        btn_width = DEFAULT_BTN_WIDTH;
+        btn_height -= (padding * 2);
+    }
+
+    draw_custom_buttons(btn_start_x, btn_start_y, real_width, real_height, btn_width,
+        btn_height, DEFAULT_BTN_SPACING, btn_names, btn_count, orientation);
+}
+
+static void draw_section(int start_x, int start_y, int width, int height, int margin, Color bg_color,
+    int border_width, Color border_color)
+{
+    int real_width = width - (margin * 2);
+    int real_height = height - (margin * 2);
+
+    int real_start_x = start_x + margin;
+    int real_start_y = start_y + margin;
+
+    DrawRectangle(real_start_x, real_start_y, real_width, real_height, bg_color);
+    Rectangle border_rec = { real_start_x, real_start_y, real_width, real_height };
+    DrawRectangleLinesEx(border_rec, border_width, border_color);
 }

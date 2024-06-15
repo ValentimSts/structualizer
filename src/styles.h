@@ -1,16 +1,15 @@
-/*********************************************************
+/********************************************************************
 * 
-*  This header file stores all the styling related info 
-*  used throughout the application, from colors to fonts
-*  and measures.
+*   This header file stores all the styling related info used
+*   throughout the application, from colors to fonts and measures.
 *
-*  All the color names were taken from the Coolors website:
-*   - https://coolors.co/
+*    All the color names were taken from the Coolors website:
+*       - https://coolors.co/
 *
-*  Most, if not all, of the colors used in this application
-*  chosen to follow the 60-30-10 rule.
+*   Most, if not all, of the colors used in this application chosen
+*   to follow the 60-30-10 rule.
 *
-**********************************************************/
+********************************************************************/
 
 #ifndef _STYLES_H_
 #define _STYLES_H_
