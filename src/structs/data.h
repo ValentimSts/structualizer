@@ -19,7 +19,6 @@ typedef struct data {
 
 
 int hash(data* d, int upper_bound);
-
 data* create_data(char* key, char* value);
 int destroy_data(data* d);
 int update_data(data* d, char* value);

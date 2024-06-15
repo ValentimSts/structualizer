@@ -17,36 +17,37 @@ typedef enum Orientation {
 
 
 static void draw_struct_btn_section(int start_x, int start_y, int width, int height, int padding, int margin,
-    Color bg_color, int border_width, Color border_color, char** btn_names, int btn_count,
+    Color bg_color, int border_width, Color border_color, Struct** structs, int struct_count,
     Orientation orientation);
 
 static void draw_section(int start_x, int start_y, int width, int height, int margin, Color bg_color,
     int border_width, Color border_color);
 
 static void draw_buttons(int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
-    int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count,
+    int btn_width, int btn_height, int btn_spacing, Struct** structs, int struct_count,
     Orientation orientation);
 
 static void draw_default_buttons(int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
-    char** btn_names, int btn_count, Orientation orientation);
+    Struct** structs, int struct_count, Orientation orientation);
 
 static void draw_custom_buttons(int start_x, int start_y, int btn_section_width, int btn_section_height,
-    int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count,
+    int btn_width, int btn_height, int btn_spacing, Struct** structs, int struct_count,
     Orientation orientation);
 
 void test_action();
 
 
-void update_main_screen(ScreenController* screen_controller, char** btn_names, int btn_count)
+void update_main_screen(ScreenController* screen_controller, Struct** structs, int struct_count)
 {
     ClearBackground(PRIMARY_COLOR);
     
+    int btn_section_padding = 10;
     int btn_section_margin = 10;
     int btn_section_width = 250;
     int btn_section_height = screen_controller->screen_height;
 
-    draw_struct_btn_section(0, 0, btn_section_width, btn_section_height,
-        10, 10, PRIMARY_COLOR, 2, SECONDARY_COLOR, btn_names, btn_count, VERTICAL);
+    draw_struct_btn_section(0, 0, btn_section_width, btn_section_height, btn_section_padding,
+        btn_section_margin, PRIMARY_COLOR, 2, SECONDARY_COLOR, structs, struct_count, VERTICAL);
 
     int top_right_section_margin = 10;
     int top_right_section_width = screen_controller->screen_width - btn_section_width;
@@ -73,16 +74,16 @@ void update_main_screen(ScreenController* screen_controller, char** btn_names, i
  * @param start_y The y position of the top-left corner of the section.
  * @param max_btn_section_width The maximum width of the section.
  * @param max_btn_section_height The maximum height of the section.
- * @param btn_names The names of the buttons to be drawn.
- * @param btn_count The number of buttons to be drawn.
+ * @param structs The structs to be drawn as buttons.
+ * @param struct_count The number of buttons to be drawn.
  * @param orientation The orientation of the buttons (HORIZONTAL or VERTICAL).
  */
 static void draw_default_buttons(int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
-    char** btn_names, int btn_count, Orientation orientation)
+    Struct** structs, int struct_count, Orientation orientation)
 {   
     draw_buttons(start_x, start_y, max_btn_section_width, max_btn_section_height,
         DEFAULT_BTN_WIDTH, DEFAULT_BTN_HEIGHT, DEFAULT_BTN_SPACING,
-        btn_names, btn_count, orientation);
+        structs, struct_count, orientation);
 }
 
 /**
@@ -97,15 +98,15 @@ static void draw_default_buttons(int start_x, int start_y, int max_btn_section_w
  * @param btn_width The width of the buttons to be drawn.
  * @param btn_height The height of the buttons to be drawn.
  * @param btn_spacing The spacing between the buttons.
- * @param btn_names The names of the buttons to be drawn.
- * @param btn_count The number of buttons to be drawn.
+ * @param structs The structs to be drawn as buttons.
+ * @param struct_count The number of buttons to be drawn.
  * @param orientation The orientation of the buttons (HORIZONTAL or VERTICAL).
  */
 static void draw_custom_buttons( int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
-    int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count, Orientation orientation)
+    int btn_width, int btn_height, int btn_spacing, Struct** structs, int struct_count, Orientation orientation)
 {
     draw_buttons(start_x, start_y, max_btn_section_width, max_btn_section_height,
-        btn_width, btn_height, btn_spacing, btn_names, btn_count, orientation);
+        btn_width, btn_height, btn_spacing, structs, struct_count, orientation);
 }
 
 /**
@@ -120,12 +121,12 @@ static void draw_custom_buttons( int start_x, int start_y, int max_btn_section_w
  * @param btn_width The width of the buttons to be drawn.
  * @param btn_height The height of the buttons to be drawn.
  * @param btn_spacing The spacing between the buttons.
- * @param btn_names The names of the buttons to be drawn.
- * @param btn_count The number of buttons to be drawn.
+ * @param structs The structs to be drawn as buttons.
+ * @param struct_count The number of buttons to be drawn.
  * @param orientation The orientation of the buttons (HORIZONTAL or VERTICAL).
  */
 static void draw_buttons(int start_x, int start_y, int max_btn_section_width, int max_btn_section_height,
-    int btn_width, int btn_height, int btn_spacing, char** btn_names, int btn_count,
+    int btn_width, int btn_height, int btn_spacing, Struct** structs, int struct_count,
     Orientation orientation)
 {
     // Don't draw any buttons if the width or height of the buttons
@@ -147,7 +148,7 @@ static void draw_buttons(int start_x, int start_y, int max_btn_section_width, in
     int next_btn_x = start_x;
     int next_btn_y = start_y;
 
-    for (int i = 0; i < btn_count; i++) {        
+    for (int i = 0; i < struct_count; i++) {        
         if (orientation == HORIZONTAL) {
             next_btn_x = start_x + curr_btn_section_width;
 
@@ -193,21 +194,36 @@ static void draw_buttons(int start_x, int start_y, int max_btn_section_width, in
             }
         }
 
-        Button* btn = create_custom_button(next_btn_x, next_btn_y,
-            btn_width, btn_height, btn_names[i], 20, test_action);
+        Button* btn = create_custom_select_button(next_btn_x, next_btn_y,
+            btn_width, btn_height, structs[i]->name, 20, test_action);
         draw_button(btn);
         clear_button(btn);
     }
 }
-
 
 void test_action(char* btn_name)
 {
     printf("Button pressed: %s\n", btn_name);
 }
 
+/**
+ * @brief Draws a button section on the screen with the given parameters.
+ * 
+ * @param start_x The x position of the top-left corner of the section.
+ * @param start_y The y position of the top-left corner of the section.
+ * @param width The width of the section. 
+ * @param height The height of the section. 
+ * @param padding The padding of the section.
+ * @param margin The margin of the section.
+ * @param bg_color The background color of the section.
+ * @param border_width The width of the border of the section.
+ * @param border_color The color of the border of the section. 
+ * @param structs The structs to be drawn as buttons. 
+ * @param struct_count The number of buttons to be drawn. 
+ * @param orientation The orientation of the buttons (HORIZONTAL or VERTICAL). 
+ */
 static void draw_struct_btn_section(int start_x, int start_y, int width, int height, int padding, int margin,
-    Color bg_color, int border_width, Color border_color, char** btn_names, int btn_count,
+    Color bg_color, int border_width, Color border_color, Struct** structs, int struct_count,
     Orientation orientation)
 {
     // Determine the real values of the section, excluding the margins.
@@ -241,9 +257,21 @@ static void draw_struct_btn_section(int start_x, int start_y, int width, int hei
     }
 
     draw_custom_buttons(btn_start_x, btn_start_y, real_width, real_height, btn_width,
-        btn_height, DEFAULT_BTN_SPACING, btn_names, btn_count, orientation);
+        btn_height, DEFAULT_BTN_SPACING, structs, struct_count, orientation);
 }
 
+/**
+ * @brief Draws a section on the screen with the given parameters.
+ * 
+ * @param start_x The x position of the top-left corner of the section.
+ * @param start_y The y position of the top-left corner of the section.
+ * @param width The width of the section.
+ * @param height The height of the section. 
+ * @param margin The margin of the section.
+ * @param bg_color The background color of the section. 
+ * @param border_width The width of the border of the section. 
+ * @param border_color The color of the border of the section. 
+ */
 static void draw_section(int start_x, int start_y, int width, int height, int margin, Color bg_color,
     int border_width, Color border_color)
 {

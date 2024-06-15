@@ -28,7 +28,7 @@ typedef struct Struct {
 } Struct;
 
 // TODO: add more data structures.
-extern const StructVtable HASH_MAP_VTABLE[]; 
+extern const StructVtable HASH_MAP_VTABLE[], TREE_MAP_VTABLE[]; 
 
 
 /**
@@ -37,7 +37,7 @@ extern const StructVtable HASH_MAP_VTABLE[];
  * 
  * @param self The data structure to be drawn.
  */
-static inline const void struct_draw_struct(Struct* self)
+static inline void struct_draw_struct(Struct* self)
 {
     self->vtable->draw_struct();
 }
@@ -48,7 +48,7 @@ static inline const void struct_draw_struct(Struct* self)
  * 
  * @param self The data structure to be drawn. 
  */
-static inline const void struct_draw_struct_stats(const Struct* self)
+static inline void struct_draw_struct_stats(const Struct* self)
 {
     self->vtable->draw_struct_stats();
 }

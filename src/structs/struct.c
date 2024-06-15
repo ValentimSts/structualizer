@@ -1,11 +1,14 @@
 #include "struct.h"
 
 typedef enum StructType {
-    HASH_MAP
+    HASH_MAP,
+    TREE_MAP,
+    UNDEFINED
 } StructType;
 
 char const* StructNames[] = {
-    "hash-map"
+    "hash-map",
+    "tree-map"
 };
 
 static StructType get_struct_type(char const* struct_name);
@@ -19,15 +22,21 @@ Struct** create_structs(char** struct_names, int struct_count)
 
     for (int i = 0; i < struct_count; i++) {
         StructType type = get_struct_type(struct_names[i]);
-        if (type == -1) {
-            continue;
-        }
 
         switch (type) {
             case HASH_MAP:
                 structs[i] = (Struct*) malloc(sizeof(Struct));
-                structs[i]->name = "hash-map";
-                structs[i]->vtable = HASH_MAP_VTABLE;
+                structs[i]->name = "Hash Map";
+                structs[i]->vtable = NULL; // TODO: temporary solution.
+                break;
+
+            case TREE_MAP:
+                structs[i] = (Struct*) malloc(sizeof(Struct));
+                structs[i]->name = "Tree Map";
+                structs[i]->vtable = NULL; // TODO: temporary solution.
+                break;
+
+            case UNDEFINED:
                 break;
         }
     }
@@ -44,11 +53,11 @@ Struct** create_structs(char** struct_names, int struct_count)
  */
 static StructType get_struct_type(char const* struct_name)
 {
-    for (int i = 0; i < sizeof(StructNames) / sizeof(char*); i++) {
+    for (size_t i = 0; i < sizeof(StructNames) / sizeof(char*); i++) {
         if (strcmp(struct_name, StructNames[i]) == 0) {
             return i;
         }
     }
 
-    return -1;
+    return UNDEFINED;
 }

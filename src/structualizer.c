@@ -7,6 +7,7 @@
 
 #include "styles.h"
 #include "screens/screen_controller.h"
+#include "structs/struct.h"
 
 // TODO: this function should be moved elsewhere.
 static char** get_available_struct_names(char* structs_dir); 
@@ -24,11 +25,12 @@ int main()
         struct_count++;
     }
 
+    Struct** structs = create_structs(struct_names, 2);
     ScreenController* screen_controller = create_screen_controller(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        update_screen(screen_controller, struct_names, struct_count);
+        update_screen(screen_controller, structs, struct_count);
         EndDrawing();
     }
 

@@ -1,6 +1,8 @@
 #ifndef _SCREEN_CONTROLLER_H_
 #define _SCREEN_CONTROLLER_H_
 
+#include "../structs/struct.h"
+
 typedef enum ScreenDir {
     MAIN_SCREEN = 0,
 } ScreenId;
@@ -27,9 +29,9 @@ ScreenController* create_screen_controller(int screen_width, int screen_height);
  * controller.
  * 
  * @param screen_controller The screen controller.
- * @param btn_names The names of the buttons to be displayed.
- * @param btn_count The number of buttons to be displayed.
+ * @param structs The structs available in the application.
+ * @param struct_count The number of structs.
  */
-void update_screen(ScreenController* screen_controller, char** btn_names, int btn_count);
+void update_screen(ScreenController* screen_controller, Struct** structs, int struct_count);
 
 #endif // _SCREEN_CONTROLLER_H_

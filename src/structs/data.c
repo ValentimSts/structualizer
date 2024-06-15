@@ -1,6 +1,5 @@
 #include "data.h"
 
-
 int hash(data* d, int upper_bound)
 {
     long int hash, a = 31415, b = 27183;

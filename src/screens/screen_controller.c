@@ -16,11 +16,11 @@ ScreenController* create_screen_controller(int screen_width, int screen_height)
     return screen_controller;
 }
 
-void update_screen(ScreenController* screen_controller, char** btn_names, int btn_count)
+void update_screen(ScreenController* screen_controller, Struct** structs, int struct_count)
 {
     switch (screen_controller->current_screen) {
         case MAIN_SCREEN:
-            update_main_screen(screen_controller, btn_names, btn_count);
+            update_main_screen(screen_controller, structs, struct_count);
             break;
     }
 }
