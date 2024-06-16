@@ -34,6 +34,7 @@ static int insert_entry(hentry* he, data* d);
 static int update_entry(hentry* he, data* d);
 static int remove_from_entry(hentry* he, data* d);
 static data* search_entry(hentry* he, data* d);
+
 static hnode* create_hash_node();
 static void link_hash_nodes(hnode* hn1, hnode* hn2);
 static int update_node_indexes(hnode* removed_hn);
@@ -48,15 +49,18 @@ static hnode* search_node(hnode* hn, data* d);
 // Struct interface implementation
 // ---------------------------------------------------------------
 
-static void draw_struct();
+static void draw_struct(int section_start_X, int section_start_y,
+    int section_width, int section_height);
 static void draw_struct_stats();
 static void struct_insert(data* d);
 static void struct_update(data* d);
 static void struct_remove(data* d);
 
-static void draw_struct()
+static void draw_struct(int section_start_X, int section_start_y,
+    int section_width, int section_height)
 {
-    printf("Drawing hash map...\n");
+    printf("Drawing hash map starting at (%d, %d) with width %d and height %d...\n",
+        section_start_X, section_start_y, section_width, section_height);
 }
 
 static void draw_struct_stats()

@@ -194,8 +194,10 @@ static void draw_buttons(int start_x, int start_y, int max_btn_section_width, in
             }
         }
 
-        Button* btn = create_custom_select_button(next_btn_x, next_btn_y,
-            btn_width, btn_height, structs[i]->name, 20, structs[i]->vtable->draw_struct); // TODO: struct_draw_struct(structs[i])
+        struct_set_struct_section_info(structs[i], next_btn_x, next_btn_y, btn_width, btn_height);
+
+        Button* btn = create_custom_button(next_btn_x, next_btn_y,
+            btn_width, btn_height, structs[i]->name, 20, SELECT, structs[i]);
         draw_button(btn);
         clear_button(btn);
     }

@@ -6,80 +6,88 @@
 #include "../styles.h"
 
 
-static Button* create_default_button(int x, int y, char* text, ButtonType type,
-    ButtonAction action);
-
-static Button* create_custom_button(int x, int y, int width, int height, char* text,
-    int font_size, ButtonType type, ButtonAction action);
-
-
-Button* create_default_select_button(int x, int y, char* text, void (*action)(void))
+Button* create_default_button(int x, int y, char* text, ButtonType type,
+    Struct* btn_struct)
 {
+    Button* btn = (Button*) malloc(sizeof(Button));
+    btn->x = x;
+    btn->y = y;
+    btn->width = DEFAULT_BTN_WIDTH;
+    btn->height = DEFAULT_BTN_HEIGHT;
+    btn->type = type;
+    btn->state = BUTTON_IDLE;
+    btn->btn_struct = btn_struct;
+    btn->activate_action = false;
+
     ButtonAction btn_action = { 0 };
-    btn_action.select_action = action;
+    switch (type) {
+        case SELECT:
+            btn_action.select_action = struct_struct_select;
+            break;
+        
+        case INSERT:
+            btn_action.insert_action = struct_struct_insert;
+            break;
 
-    return create_default_button(x, y, text, SELECT, btn_action);
+        case UPDATE:
+            btn_action.update_action = struct_struct_update;
+            break;
 
+        case REMOVE:
+            btn_action.remove_action = struct_struct_remove;
+            break;
+
+        default:
+            break;
+    }
+
+    btn->action = btn_action;
+    btn->text = text;
+    btn->font_size = DEFAULT_FONT_SIZE;
+
+    return btn;
 }
 
-Button* create_default_insert_button(int x, int y, char* text, void (*action)(data*))
+Button* create_custom_button(int x, int y, int width, int height, char* text,
+    int font_size, ButtonType type, Struct* btn_struct)
 {
+    Button* btn = (Button*) malloc(sizeof(Button));
+    btn->x = x;
+    btn->y = y;
+    btn->width = width;
+    btn->height = height;
+    btn->type = type;
+    btn->state = BUTTON_IDLE;
+    btn->btn_struct = btn_struct;
+    btn->activate_action = false;
+
     ButtonAction btn_action = { 0 };
-    btn_action.insert_action = action;
+    switch (type) {
+        case SELECT:
+            btn_action.select_action = struct_struct_select;
+            break;
+        
+        case INSERT:
+            btn_action.insert_action = struct_struct_insert;
+            break;
 
-    return create_default_button(x, y, text, INSERT, btn_action);
-}
+        case UPDATE:
+            btn_action.update_action = struct_struct_update;
+            break;
 
-Button* create_default_update_button(int x, int y, char* text, void (*action)(data*))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.update_action = action;
+        case REMOVE:
+            btn_action.remove_action = struct_struct_remove;
+            break;
 
-    return create_default_button(x, y, text, UPDATE, btn_action);
-}
+        default:
+            break;
+    }
 
-Button* create_default_remove_button(int x, int y, char* text, void (*action)(data*))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.remove_action = action;
+    btn->action = btn_action;
+    btn->text = text;
+    btn->font_size = font_size;
 
-    return create_default_button(x, y, text, REMOVE, btn_action);
-}
-
-Button* create_custom_select_button(int x, int y, int width, int height, char* text,
-    int font_size, void (*action)(void))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.select_action = action;
-
-    return create_custom_button(x, y, width, height, text, font_size, SELECT, btn_action);
-}
-
-Button* create_custom_insert_button(int x, int y, int width, int height, char* text,
-    int font_size, void (*action)(data*))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.insert_action = action;
-
-    return create_custom_button(x, y, width, height, text, font_size, INSERT, btn_action);
-}
-
-Button* create_custom_update_button(int x, int y, int width, int height, char* text,
-    int font_size, void (*action)(data*))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.update_action = action;
-
-    return create_custom_button(x, y, width, height, text, font_size, UPDATE, btn_action);
-}
-
-Button* create_custom_remove_button(int x, int y, int width, int height, char* text,
-    int font_size, void (*action)(data*))
-{
-    ButtonAction btn_action = { 0 };
-    btn_action.remove_action = action;
-
-    return create_custom_button(x, y, width, height, text, font_size, REMOVE, btn_action);
+    return btn;
 }
 
 void draw_button(Button* btn)
@@ -129,19 +137,19 @@ void draw_button(Button* btn)
     if (btn->activate_action) {
         switch (btn->type) {
             case SELECT:
-                btn->action.select_action();
+                btn->action.select_action(btn->btn_struct);
                 break;
             
             case INSERT:
-                // TODO: implement.
+                btn->action.insert_action(btn->btn_struct);
                 break;
 
             case UPDATE:
-                // TODO: implement.
+                btn->action.update_action(btn->btn_struct);
                 break;
 
             case REMOVE:
-                // TODO: implement.
+                btn->action.remove_action(btn->btn_struct);
                 break;
 
             default:
@@ -155,63 +163,4 @@ void draw_button(Button* btn)
 void clear_button(Button* btn)
 {
     free(btn);
-}
-
-/**
- * @brief Create a button struct with the default width, height and
- * font size values, and the given parameters.
- * The default width, height and font size values are DEFAULT_BTN_WIDTH,
- * DEFAULT_BTN_HEIGHT and DEFAULT_FONT_SIZE respectively.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @return A pointer to the created button.
- */
-static Button* create_default_button(int x, int y, char* text, ButtonType type,
-    ButtonAction action)
-{
-    Button* btn = (Button*) malloc(sizeof(Button));
-    btn->x = x;
-    btn->y = y;
-    btn->width = DEFAULT_BTN_WIDTH;
-    btn->height = DEFAULT_BTN_HEIGHT;
-    btn->type = type;
-    btn->state = BUTTON_IDLE;
-    btn->activate_action = false;
-    btn->action = action;
-    btn->text = text;
-    btn->font_size = DEFAULT_FONT_SIZE;
-
-    return btn;
-}
-
-/**
- * @brief Create a button struct with a custom width and height values,
- * and the given parameters.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param width The width of the button.
- * @param height The height of the button.
- * @param text The text to be displayed on the button.
- * @param font_size The font size of the text.
- * @return A pointer to the created button.
- */
-static Button* create_custom_button(int x, int y, int width, int height, char* text,
-    int font_size, ButtonType type, ButtonAction action)
-{
-    Button* btn = (Button*) malloc(sizeof(Button));
-    btn->x = x;
-    btn->y = y;
-    btn->width = width;
-    btn->height = height;
-    btn->type = type;
-    btn->state = BUTTON_IDLE;
-    btn->activate_action = false;
-    btn->action = action;
-    btn->text = text;
-    btn->font_size = font_size;
-
-    return btn;
 }

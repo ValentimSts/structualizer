@@ -14,19 +14,10 @@
 #include "data.h"
 
 typedef struct StructVtable {
-    void (*draw_struct)(void);
-    void (*draw_struct_stats)(void);
-
-    /************************************************************************** 
-    *   TODO:
-    * 
-    *   void (*draw_struct)(int section_start_X, int section_start_y,
-    *       int section_width, int section_height);
-    * 
-    *   void (*draw_struct_stats)(int section_start_X, int section_start_y,
-    *       int section_width, int section_height);
-    * 
-    ***************************************************************************/
+    void (*draw_struct)(int section_start_x, int section_start_y,
+        int section_width, int section_height);
+    void (*draw_struct_stats)(int section_start_x, int section_start_y,
+        int section_width, int section_height);
     
     void (*struct_insert)(data* d);
     void (*struct_update)(data* d);
@@ -36,11 +27,34 @@ typedef struct StructVtable {
 typedef struct Struct {
     const char* name;
     const StructVtable* vtable;
+
+    // Raylib area delimeters.
+    int struct_section_start_x;
+    int struct_section_start_y;
+    int struct_section_width;
+    int struct_section_height;
+
+    // Raylib action parameter.
+    data* d;
 } Struct;
 
 // TODO: add more data structures.
 extern const StructVtable HASH_MAP_VTABLE[], TREE_MAP_VTABLE[]; 
 
+
+static inline void struct_set_struct_section_info(Struct* self, int start_x,
+    int start_y, int width, int height)
+{
+    self->struct_section_start_x = start_x;
+    self->struct_section_start_y = start_y;
+    self->struct_section_width = width;
+    self->struct_section_height = height;
+}
+
+static inline void struct_set_struct_data(Struct* self, data* d)
+{
+    self->d = d;
+}
 
 /**
  * @brief Draws the representation of the provided data
@@ -48,20 +62,15 @@ extern const StructVtable HASH_MAP_VTABLE[], TREE_MAP_VTABLE[];
  * 
  * @param self The data structure to be drawn.
  */
-static inline void struct_draw_struct(Struct* self)
+static void struct_struct_select(Struct* self)
 {
-    self->vtable->draw_struct();
-}
+    self->vtable->draw_struct(self->struct_section_start_x,
+        self->struct_section_start_y, self->struct_section_width,
+        self->struct_section_height);
 
-/**
- * @brief Draws the statistics of the provided data
- * structure.
- * 
- * @param self The data structure to be drawn. 
- */
-static inline void struct_draw_struct_stats(const Struct* self)
-{
-    self->vtable->draw_struct_stats();
+    self->vtable->draw_struct_stats(self->struct_section_start_x,
+        self->struct_section_start_y, self->struct_section_width,
+        self->struct_section_height);
 }
 
 /**
@@ -71,9 +80,9 @@ static inline void struct_draw_struct_stats(const Struct* self)
  * @param self The data structure.
  * @param d The data to be inserted.
  */
-static inline void struct_struct_insert(Struct* self, data* d)
+static void struct_struct_insert(Struct* self)
 {
-    self->vtable->struct_insert(d);
+    self->vtable->struct_insert(self->d);
 }
 
 /**
@@ -83,9 +92,9 @@ static inline void struct_struct_insert(Struct* self, data* d)
  * @param self The data structure.
  * @param d The data to be updated.
  */
-static inline void struct_struct_update(Struct* self, data* d)
+static inline void struct_struct_update(Struct* self)
 {
-    self->vtable->struct_update(d);
+    self->vtable->struct_update(self->d);
 }
 
 /**
@@ -95,9 +104,9 @@ static inline void struct_struct_update(Struct* self, data* d)
  * @param self The data structure.
  * @param d The data to be removed.
  */
-static inline void struct_struct_remove(Struct* self, data* d)
+static inline void struct_struct_remove(Struct* self)
 {
-    self->vtable->struct_remove(d);
+    self->vtable->struct_remove(self->d);
 }
 
 

@@ -4,6 +4,8 @@
         "stdlib.h": "c",
         "screen_controller.h": "c",
         "raylib.h": "c",
-        "raylib_struct_ops.h": "c"
+        "raylib_struct_ops.h": "c",
+        "styles.h": "c",
+        "struct.h": "c"
     }
 }

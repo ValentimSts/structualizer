@@ -4,6 +4,7 @@
 #include "../structs/data.h"
 #include "../structs/struct.h"
 
+
 typedef enum ButtonType {
     SELECT = 0,
     INSERT = 1,
@@ -18,11 +19,11 @@ typedef enum ButtonState {
 } ButtonState;
 
 typedef struct ButtonAction {
-    void (*select_action)(void);
+    void (*select_action)(Struct*);
 
-    void (*insert_action)(data*);
-    void (*update_action)(data*);
-    void (*remove_action)(data*);
+    void (*insert_action)(Struct*);
+    void (*update_action)(Struct*);
+    void (*remove_action)(Struct*);
 } ButtonAction;
 
 typedef struct Button {
@@ -32,6 +33,7 @@ typedef struct Button {
     int height;
     ButtonType type;
     ButtonState state;
+    Struct* btn_struct;
     int activate_action; // TODO: maybe use bool here instead.
     ButtonAction action;
     char* text;
@@ -40,100 +42,33 @@ typedef struct Button {
 
 
 /**
- * @brief Create a select button with the default values for width, height
- * and font size.
+ * @brief Create a button struct with the default width, height and
+ * font size values, and the given parameters.
+ * The default width, height and font size values are DEFAULT_BTN_WIDTH,
+ * DEFAULT_BTN_HEIGHT and DEFAULT_FONT_SIZE respectively.
  * 
  * @param x The x position of the button.
  * @param y The y position of the button.
  * @param text The text to be displayed on the button.
- * @param action The action to be performed when the button is clicked.
  * @return A pointer to the created button.
  */
-Button* create_default_select_button(int x, int y, char* text, void (*action)(void));
+Button* create_default_button(int x, int y, char* text, ButtonType type,
+    Struct* btn_struct);
 
 /**
- * @brief Create an insert button with the default values for width, height
- * and font size.
+ * @brief Create a button struct with a custom width and height values,
+ * and the given parameters.
  * 
  * @param x The x position of the button.
  * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_default_insert_button(int x, int y, char* text, void (*action)(data*));
-
-/**
- * @brief Create an update button with the default values for width, height
- * and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_default_update_button(int x, int y, char* text, void (*action)(data*));
-
-/**
- * @brief Create a remove button with the default values for width, height
- * and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_default_remove_button(int x, int y, char* text, void (*action)(data*));
-
-/**
- * @brief Create a select button with the given width, height and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
+ * @param width The width of the button.
+ * @param height The height of the button.
  * @param text The text to be displayed on the button.
  * @param font_size The font size of the text.
- * @param action The action to be performed when the button is clicked.
  * @return A pointer to the created button.
  */
-Button* create_custom_select_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(void));
-
-/**
- * @brief Create an insert button with the given width, height and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param font_size The font size of the text.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_custom_insert_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(data*));
-
-/**
- * @brief Create an update button with the given width, height and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param font_size The font size of the text.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_custom_update_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(data*));
-
-/**
- * @brief Create a remove button with the given width, height and font size.
- * 
- * @param x The x position of the button.
- * @param y The y position of the button.
- * @param text The text to be displayed on the button.
- * @param font_size The font size of the text.
- * @param action The action to be performed when the button is clicked.
- * @return A pointer to the created button.
- */
-Button* create_custom_remove_button(int x, int y, int width, int height, char* text, int font_size, void (*action)(data*));
+Button* create_custom_button(int x, int y, int width, int height, char* text,
+    int font_size, ButtonType type, Struct* btn_struct);
 
 /**
  * @brief Draws the given button on the screen.
