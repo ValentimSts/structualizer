@@ -1,7 +1,7 @@
 #ifndef _SCREEN_CONTROLLER_H_
 #define _SCREEN_CONTROLLER_H_
 
-#include "../structs/struct.h"
+#include "../structs/data_structure.h"
 
 typedef enum ScreenDir {
     MAIN_SCREEN = 0,
@@ -29,9 +29,9 @@ ScreenController* create_screen_controller(int screen_width, int screen_height);
  * controller.
  * 
  * @param screen_controller The screen controller.
- * @param structs The structs available in the application.
- * @param struct_count The number of structs.
+ * @param data_structures The data structures available in the application.
+ * @param data_structure_count The number of data structures.
  */
-void update_screen(ScreenController* screen_controller, Struct** structs, int struct_count);
+void update_screen(ScreenController* screen_controller, DataStructure** data_structures, int data_structure_count);
 
 #endif // _SCREEN_CONTROLLER_H_

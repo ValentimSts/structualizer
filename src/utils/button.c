@@ -7,7 +7,7 @@
 
 
 Button* create_default_button(int x, int y, char* text, ButtonType type,
-    Struct* btn_struct)
+    DataStructure* btn_data_structure)
 {
     Button* btn = (Button*) malloc(sizeof(Button));
     btn->x = x;
@@ -16,25 +16,25 @@ Button* create_default_button(int x, int y, char* text, ButtonType type,
     btn->height = DEFAULT_BTN_HEIGHT;
     btn->type = type;
     btn->state = BUTTON_IDLE;
-    btn->btn_struct = btn_struct;
+    btn->btn_data_structure = btn_data_structure;
     btn->activate_action = false;
 
     ButtonAction btn_action = { 0 };
     switch (type) {
         case SELECT:
-            btn_action.select_action = struct_struct_select;
+            btn_action.select_action = select_data_structure;
             break;
         
         case INSERT:
-            btn_action.insert_action = struct_struct_insert;
+            btn_action.insert_action = insert_data_structure_data;
             break;
 
         case UPDATE:
-            btn_action.update_action = struct_struct_update;
+            btn_action.update_action = update_data_structure_data;
             break;
 
         case REMOVE:
-            btn_action.remove_action = struct_struct_remove;
+            btn_action.remove_action = clear_data_structure_data;
             break;
 
         default:
@@ -49,7 +49,7 @@ Button* create_default_button(int x, int y, char* text, ButtonType type,
 }
 
 Button* create_custom_button(int x, int y, int width, int height, char* text,
-    int font_size, ButtonType type, Struct* btn_struct)
+    int font_size, ButtonType type, DataStructure* btn_data_structure)
 {
     Button* btn = (Button*) malloc(sizeof(Button));
     btn->x = x;
@@ -58,25 +58,25 @@ Button* create_custom_button(int x, int y, int width, int height, char* text,
     btn->height = height;
     btn->type = type;
     btn->state = BUTTON_IDLE;
-    btn->btn_struct = btn_struct;
+    btn->btn_data_structure = btn_data_structure;
     btn->activate_action = false;
 
     ButtonAction btn_action = { 0 };
     switch (type) {
         case SELECT:
-            btn_action.select_action = struct_struct_select;
+            btn_action.select_action = select_data_structure;
             break;
         
         case INSERT:
-            btn_action.insert_action = struct_struct_insert;
+            btn_action.insert_action = insert_data_structure_data;
             break;
 
         case UPDATE:
-            btn_action.update_action = struct_struct_update;
+            btn_action.update_action = update_data_structure_data;
             break;
 
         case REMOVE:
-            btn_action.remove_action = struct_struct_remove;
+            btn_action.remove_action = clear_data_structure_data;
             break;
 
         default:
@@ -137,27 +137,32 @@ void draw_button(Button* btn)
     if (btn->activate_action) {
         switch (btn->type) {
             case SELECT:
-                btn->action.select_action(btn->btn_struct);
+                btn->action.select_action(btn->btn_data_structure);
                 break;
             
             case INSERT:
-                btn->action.insert_action(btn->btn_struct);
+                btn->action.insert_action(btn->btn_data_structure);
                 break;
 
             case UPDATE:
-                btn->action.update_action(btn->btn_struct);
+                btn->action.update_action(btn->btn_data_structure);
                 break;
 
             case REMOVE:
-                btn->action.remove_action(btn->btn_struct);
+                btn->action.remove_action(btn->btn_data_structure);
                 break;
 
             default:
                 break;
         }
 
-        btn->activate_action = 0;
+        btn->activate_action = 1;
     }
+}
+
+void perform_button_action(Button* btn)
+{
+    btn->activate_action = 1;
 }
 
 void clear_button(Button* btn)

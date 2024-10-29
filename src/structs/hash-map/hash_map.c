@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "raylib.h"
+
 #include "hash_map.h"
-#include "../struct.h"
+#include "../data_structure.h"
 
 typedef struct hash_map_entry hentry;
 typedef struct hash_node hnode;
 
 struct hash_map {
-    Struct* base_struct; 
+    DataStructure* base_data_structure; 
 
     int size;
     hentry** entries;
@@ -46,52 +48,37 @@ static hnode* search_node(hnode* hn, data* d);
 
 
 // ---------------------------------------------------------------
-// Struct interface implementation
+// DataStructure interface implementation
 // ---------------------------------------------------------------
 
-static void draw_struct(int section_start_X, int section_start_y,
+static void draw(int section_start_X, int section_start_y,
     int section_width, int section_height);
-static void draw_struct_stats();
-static void struct_insert(data* d);
-static void struct_update(data* d);
-static void struct_remove(data* d);
+static void draw_stats(int section_start_X, int section_start_y,
+    int section_width, int section_height);
 
-static void draw_struct(int section_start_X, int section_start_y,
+
+static void draw(int section_start_X, int section_start_y,
     int section_width, int section_height)
 {
     printf("Drawing hash map starting at (%d, %d) with width %d and height %d...\n",
         section_start_X, section_start_y, section_width, section_height);
+
+    // Draw the hash map
+    DrawRectangle(section_start_X, section_start_y, section_width, section_height, BLACK);
 }
 
-static void draw_struct_stats()
+static void draw_stats(int section_start_X, int section_start_y,
+    int section_width, int section_height)
 {
     printf("Drawing hash map statistics...\n");
 }
 
-static void struct_insert(data* d)
-{
-    printf("Inserting data into hash map...\n");
-    print_data(d);
-}
-
-static void struct_update(data* d)
-{
-    printf("Updating data in hash map...\n");
-    print_data(d);
-}
-
-static void struct_remove(data* d)
-{
-    printf("Removing data from hash map...\n");
-    print_data(d);
-}
-
-const StructVtable HASH_MAP_VTABLE[] = {
-    {draw_struct, draw_struct_stats, struct_insert, struct_update, struct_remove}
+const DataStructureVtable HASH_MAP_VTABLE[] = {
+    {draw, draw_stats}
 };
 
 const hmap DEFAULT_HASH_MAP = {
-    .base_struct = &(Struct) {
+    .base_data_structure = &(DataStructure) {
         .name = "Hash Map",
         .vtable = HASH_MAP_VTABLE
     },
@@ -114,14 +101,14 @@ hmap* create_hash_map() {
         return NULL;
     }
 
-    hm->base_struct = (Struct*) malloc(sizeof(Struct));
-    if (hm->base_struct == NULL) {
+    hm->base_data_structure = (DataStructure*) malloc(sizeof(DataStructure));
+    if (hm->base_data_structure == NULL) {
         free(hm);
         return NULL;
     }
 
-    hm->base_struct->name = "Hash Map";
-    hm->base_struct->vtable = HASH_MAP_VTABLE;
+    hm->base_data_structure->name = "Hash Map";
+    hm->base_data_structure->vtable = HASH_MAP_VTABLE;
 
     hm->size = TABLE_SIZE;
     hm->entries = (hentry**) malloc(sizeof(hentry*) * hm->size);

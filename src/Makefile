@@ -38,7 +38,7 @@ HASH_MAP_DIR = $(STRUCTS_DIR)/hash-map
 TREE_MAP_DIR = $(STRUCTS_DIR)/tree-map
 
 # Sources
-STRUCTS_SRCS = $(STRUCTS_DIR)/struct.c \
+STRUCTS_SRCS = $(STRUCTS_DIR)/data_structure.c \
 			   $(STRUCTS_DIR)/data.c \
 			   $(HASH_MAP_DIR)/hash_map.c \
 			   $(TREE_MAP_DIR)/tree_map.c

@@ -7,10 +7,10 @@
 
 #include "styles.h"
 #include "screens/screen_controller.h"
-#include "structs/struct.h"
+#include "structs/data_structure.h"
 
 // TODO: this function should be moved elsewhere.
-static char** get_available_struct_names(char* structs_dir); 
+static char** get_available_struct_names(char* data_structures_dir); 
 
 int main()
 {
@@ -25,12 +25,12 @@ int main()
         struct_count++;
     }
 
-    Struct** structs = create_structs(struct_names, &struct_count);
+    DataStructure** data_structures = create_data_structures(struct_names, &struct_count);
     ScreenController* screen_controller = create_screen_controller(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        update_screen(screen_controller, structs, struct_count);
+        update_screen(screen_controller, data_structures, struct_count);
         EndDrawing();
     }
 
